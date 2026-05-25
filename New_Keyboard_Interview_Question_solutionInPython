@@ -1,0 +1,155 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+from collections import deque 
+
+def receivedText(S):
+    # WRITE DOWN YOUR CODE HERE
+    result=""
+    res=""
+    rs=""
+    r=""
+    l=[]
+    k=""
+    dict_={}
+    if S.count("#")>0:
+        l+=[S.index("#")]
+        dict_["#"]="for_digits"
+    if S.count("<")>0:
+        l+=[S.index("<")]
+        dict_["<"]="for_h"
+    if S.count(">")>0:
+        l+=[S.index(">")]
+        dict_[">"]="for_e"
+    if S.count("*")>0:
+        l+=[S.index("*")]
+        dict_["*"]="for_del"
+        
+    F=list(dict_.keys())
+    p=len(F)
+    b=list(dict_.values())
+   # print(S[L[3]])
+    e=""
+    
+    for char in F:
+        if char==F[0]:
+            result=eval(b[0])(S)
+        elif char==F[1]:
+            res=eval(b[1])(result)
+            #print(res)
+        elif char==F[2]:
+            rs=eval(b[2])(res)
+          #  print(rs)
+        elif char==F[3]:
+            r=eval(b[3])(rs)
+            #print(r)
+    
+    if p==1:
+        e="".join(result)
+    elif p==2:
+        e="".join(res)
+    elif p==3:
+        e="".join(rs)
+    elif p==4:
+        e="".join(r)
+    
+    v=re.sub(r"@","",e)
+    k=re.sub(r"#","",v)
+        
+    return k 
+
+def for_h(V):
+        
+    q=0
+    W=V
+    q=W.count("<")
+    f=W.count(">")
+    #for i in range(q):
+    W=W.replace("<","<@")
+    #print(W)
+    #for j in range(f):
+    W=W.replace(">",">&")
+    #print(W)
+        
+    F=[]   
+    F=re.split(r"[<>]",W)
+    k=len(F)
+    H=[]
+    E=[]
+    O=[]
+    E_=[]
+    L=[]
+    for n in range(k):
+        if F[n].count("@")>0:
+            H+=[F[n]]
+        elif F[n].count("&")>0:
+            E+=[F[n]]
+        else:
+            O+=[F[n]]
+    H_=H[::-1]
+    L=H_+O+E
+    D="".join(L)
+        
+    return D 
+def for_e(M):
+   #print(S) 
+    Y=""
+    Y=re.sub(r"&","",M)
+    
+    return Y 
+def for_del(N):
+    D=""
+    u=""
+    o=1
+    g=""
+    d_index=[]
+    K=list(N)
+    #print(N.count("*"))
+    while N.count("*")>0:
+        n=N.index("*")
+        N=N[:n-1]+""+N[n+1:]
+    return N 
+    
+
+def for_digits(Z):
+    d=[]
+    
+    f=Z.count("#")
+    l=""
+    if f>0:
+        for j in range(len(Z)):
+            if Z[j]=="#":
+                d+=[j]
+    t=Z[0:d[0]]
+    for z in range(0,len(d)):
+        if z%2==0 and z<len(d)-1:
+            L=Z[d[z]:d[z+1]]
+            W=re.sub(r'\d+',"",L)
+            t+=W 
+        elif z%2!=0 and z<len(d)-1:
+            L=Z[d[z]:d[z+1]]
+            t+=L
+        elif z%2!=0 and z==len(d)-1:
+            L=Z[d[z]:]
+            t+=L
+        elif z%2==0 and z==len(d)-1:
+            L=Z[d[z]:]
+            W=re.sub(r'\d+',"",L)
+            t+=W
+    return t
+
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    S = input()
+
+    rest = receivedText(S)
+
+    fptr.write(rest + '\n')
+
+    fptr.close()
